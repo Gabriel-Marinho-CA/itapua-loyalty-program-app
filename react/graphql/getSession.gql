@@ -1,0 +1,11 @@
+query Profile {
+  profile(customFields: "document") @context(provider: "vtex.store-graphql") {
+    id
+    email
+    customFields {
+      key
+      value
+    }
+  }
+} 
+

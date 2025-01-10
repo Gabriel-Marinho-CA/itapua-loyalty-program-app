@@ -1,0 +1,33 @@
+{
+  "scripts": {
+    "lint": "tsc --noEmit && eslint --quiet --fix --ext ts,tsx .",
+    "test": "vtex-test-tools test"
+  },
+  "dependencies": {
+    "apollo-client": "^2.6.3",
+    "react": "^16.8.6",
+    "react-apollo": "^3.1.5",
+    "react-dom": "^16.8.6",
+    "react-intl": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/graphql": "14.2.2",
+    "@types/react": "^16.8.22",
+    "@types/react-intl": "^2.3.18",
+    "@vtex/test-tools": "^0.3.2",
+    "@vtex/tsconfig": "^0.2.0",
+    "eslint": "5.x",
+    "eslint-config-vtex-react": "^5.0.1",
+    "itapua.my-account-extension-example": "https://rdev--itapua.myvtex.com/_v/private/typings/linked/v1/itapua.my-account-extension-example@0.0.1+build1736518439/public/@types/itapua.my-account-extension-example",
+    "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
+    "typescript": "3.9.7",
+    "vtex.my-account": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account@1.29.0/public/@types/vtex.my-account",
+    "vtex.my-account-commons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.my-account-commons@0.16.1/public/@types/vtex.my-account-commons",
+    "vtex.order-manager": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.order-manager@0.12.0/public/@types/vtex.order-manager",
+    "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@7.45.0/public/@types/vtex.render-runtime",
+    "vtex.session-client": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.session-client@1.0.2/public/@types/vtex.session-client",
+    "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.172.1/public/@types/vtex.store-graphql",
+    "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.13/public/@types/vtex.styleguide"
+  }
+}
