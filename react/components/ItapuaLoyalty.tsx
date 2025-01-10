@@ -1,22 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+// @ts-ignore
 import UserDataLoyalty from "./UserDataLoyalty";
-import { useQuery } from "react-apollo";
+// @ts-ignore
 import { CupomDataLoyalty } from "./CupomDataLoyalty";
-import PROFILE from "../graphql/getSession.gql";
+
 import { ContentWrapper } from "vtex.my-account-commons";
 import { ILoyaltyUserDataMock } from "../interfaces/MockInterfaces";
 
 const ItapuaLoyalty = () => {
-
-  const [userDataApi, setUserDataApi] = useState<ILoyaltyUserDataMock | null>(null);
+  const [userDataApi, setUserDataApi] = useState<any | ILoyaltyUserDataMock | null>(
+    null
+  );
+  const [loading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(false);
 
   // GET USER DOCUMENT - CPF
-  const { data: profileData, loading, error } = useQuery(PROFILE);
+
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const request = await fetch("/api/checkout/pub/orderForm");
+        const response = await request.json();
+
+        if (response.ok) {
+          setIsLoading(false);
+
+          setUserDataApi(response);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+    getUserData();
+  }, []);
 
   if (loading) return <p>Loading data...</p>;
   if (error) return <p>Error retriving data...</p>;
 
-  const cpf = profileData?.profile?.customFields[0].value || null;
+  // const cpf = userDataApi.profileData?.profile?.customFields[0].value || null;
+  const cpf = userDataApi.clientProfileData.document || null;
 
   if (!cpf)
     return (
@@ -64,19 +86,21 @@ const ItapuaLoyalty = () => {
 
   return (
     <ContentWrapper titleId="Loyalty Program" namespace="itapua-loyalty">
-      <div style={{ height: "100%" }}>
-        {cpf && (
-          <div
-            className="wrapper-loyaly-data"
-            style={{ padding: "1.5rem", height: "100%" }}
-          >
-            <UserDataLoyalty cpf={cpf} setUserDataApi={setUserDataApi} />
-            {userDataApi && (
-              <CupomDataLoyalty cpf={cpf} userDataApi={userDataApi} />
-            )}
-          </div>
-        )}
-      </div>
+      {() => (
+        <div style={{ height: "100%" }}>
+          {cpf && (
+            <div
+              className="wrapper-loyaly-data"
+              style={{ padding: "1.5rem", height: "100%" }}
+            >
+              <UserDataLoyalty cpf={cpf} setUserDataApi={setUserDataApi} />
+              {userDataApi && (
+                <CupomDataLoyalty cpf={cpf} userDataApi={userDataApi} />
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </ContentWrapper>
   );
 };

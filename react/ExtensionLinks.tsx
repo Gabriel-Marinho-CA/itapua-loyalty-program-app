@@ -4,9 +4,13 @@ import { InjectedIntl, injectIntl } from 'react-intl'
 const ExtensionLinks: FunctionComponent<Props> = ({ render, intl }) => {
   return render([
     {
-      name: intl.formatMessage({ id: 'store/itapua-loyalty.link' }),
+      name: intl.formatMessage({ id: 'store/link' }),
       path: '/itapua-loyalty',
     }, 
+    // {
+    //   name: intl.formatMessage({ id: 'store/link' }),
+    //   path: '/custom-page/custom-param',
+    // },
   ])
 }
 

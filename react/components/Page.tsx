@@ -8,7 +8,7 @@ const ExamplePage: FunctionComponent<Props> = ({
 }) => {
   return (
     <ContentWrapper titleId="My ko" namespace="custom-page">
-      {() => <div>My ko: {param}</div>}
+      {() => <div>My koas: {param}</div>}
     </ContentWrapper>
   )
 }
