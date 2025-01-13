@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-// @ts-ignore
 import UserDataLoyalty from "./UserDataLoyalty";
-// @ts-ignore
 import { CupomDataLoyalty } from "./CupomDataLoyalty";
 
-import { ContentWrapper } from "vtex.my-account-commons";
+// import { ContentWrapper } from "vtex.my-account-commons";
 import { ILoyaltyUserDataMock } from "../interfaces/MockInterfaces";
 
 const ItapuaLoyalty = () => {
-  const [userDataApi, setUserDataApi] = useState<any | ILoyaltyUserDataMock | null>(
-    null
-  );
+  const [userDataApi, setUserDataApi] = useState<
+    any | ILoyaltyUserDataMock | null
+  >(null);
   const [loading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(false);
+  const [cpf, setCpf] = useState<null | string>(null);
 
   // GET USER DOCUMENT - CPF
 
@@ -22,27 +21,34 @@ const ItapuaLoyalty = () => {
         const request = await fetch("/api/checkout/pub/orderForm");
         const response = await request.json();
 
-        if (response.ok) {
+        if (request.ok) {
           setIsLoading(false);
-
           setUserDataApi(response);
         }
       } catch (error) {
         setError(error.message);
+        console.error("Error fetching data:", error);
       }
     }
     getUserData();
   }, []);
 
+  useEffect(() => {
+    if (userDataApi) {
+      setCpf(userDataApi?.clientProfileData?.document);
+    }
+  }, [userDataApi]);
+
+  useEffect(() => {
+    console.log("CPF4: ", cpf);
+  }, [cpf]);
+
   if (loading) return <p>Loading data...</p>;
   if (error) return <p>Error retriving data...</p>;
 
-  // const cpf = userDataApi.profileData?.profile?.customFields[0].value || null;
-  const cpf = userDataApi.clientProfileData.document || null;
-
   if (!cpf)
     return (
-      <>
+      <div style={{ display: cpf ? "none" : "block" }}>
         <h1
           style={{
             height: "100%",
@@ -81,27 +87,21 @@ const ItapuaLoyalty = () => {
             Recarregue a página
           </button>
         </div>
-      </>
+      </div>
     );
 
   return (
-    <ContentWrapper titleId="Loyalty Program" namespace="itapua-loyalty">
-      {() => (
-        <div style={{ height: "100%" }}>
-          {cpf && (
-            <div
-              className="wrapper-loyaly-data"
-              style={{ padding: "1.5rem", height: "100%" }}
-            >
-              <UserDataLoyalty cpf={cpf} setUserDataApi={setUserDataApi} />
-              {userDataApi && (
-                <CupomDataLoyalty cpf={cpf} userDataApi={userDataApi} />
-              )}
-            </div>
-          )}
-        </div>
-      )}
-    </ContentWrapper>
+    <div style={{ height: "100%" }}>
+      <div
+        className="wrapper-loyaly-data"
+        style={{ padding: "1.5rem", height: "100%" }}
+      >
+        <UserDataLoyalty cpf={cpf} setUserDataApi={setUserDataApi} />
+         {userDataApi && (
+          <CupomDataLoyalty cpf={cpf} userDataApi={userDataApi} />
+        )}  
+      </div>
+    </div>
   );
 };
 

@@ -1,8 +1,11 @@
-import React, { useMemo, useState } from "react";
-import { useLoyaltyCreateCupom } from "../hooks/useLoyaltyCreateCupom";
+import React, { useState } from "react";
+// import { useLoyaltyCreateCupom } from "../hooks/useLoyaltyCreateCupom";
 import { OrderForm } from "vtex.order-manager";
 import { LoyaltyCupomUserView } from "./view/LoyaltyCupomUserView";
-import { ILoyaltyUserDataMock } from "../interfaces/MockInterfaces";
+import {
+  // ILoyaltyCreatedCupomUserDataMockResponse,
+  ILoyaltyUserDataMock,
+} from "../interfaces/MockInterfaces";
 
 interface ICupomData {
   cpf: string;
@@ -19,24 +22,34 @@ export function CupomDataLoyalty({ cpf, userDataApi }: ICupomData) {
 
   const { useOrderForm } = OrderForm;
   const { orderForm } = useOrderForm();
-  const { totalpontos } = userDataApi;
 
-  const userData = useMemo(
-    () => ({
-      cpfCnpj: cpf,
-      discountValue: totalpontos,
-    }),
-    [cpf, totalpontos]
-  );
+  console.log("CupomDataLoyalty:", cpf, userDataApi);
+  // const { totalpontos } = userDataApi;
 
-  const {
-    loyaltyCupomGenerate,
-    apiCupomLoading,
-    apiCupomError,
-  } = useLoyaltyCreateCupom(userData);
+  // const userData = useMemo(
+  //   () => ({
+  //     cpfCnpj: cpf,
+  //     discountValue: totalpontos,
+  //   }),
+  //   [cpf, totalpontos]
+  // );
 
-  if (apiCupomLoading) return <p>Loading data...</p>;
-  if (apiCupomError) return <p>Error retriving data...</p>;
+  // const {
+  //   loyaltyCupomGenerate,
+  //   apiCupomLoading,
+  //   apiCupomError,
+  // } = useLoyaltyCreateCupom(userData);
+
+  const loyaltyCupomGenerate = {
+    customer: "xxx.xxx.xxx-xx",
+    nominalDiscountValue: 146,
+    totalValueFloor: 487,
+    coupon: ["ca08in80"],
+    expiresAt: "2024-12-05T22:54:45.475Z",
+  };
+
+  // if (apiCupomLoading) return <p>Loading data...</p>;
+  // if (apiCupomError) return <p>Error retriving data...</p>;
 
   const handleAttachCoupomToCart = () => {
     const { id } = orderForm;
