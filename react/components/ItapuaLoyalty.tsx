@@ -1,105 +1,101 @@
-import React, { useEffect, useState } from "react";
-import UserDataLoyalty from "./UserDataLoyalty";
-import { CupomDataLoyalty } from "./CupomDataLoyalty";
-
-// import { ContentWrapper } from "vtex.my-account-commons";
-import { ILoyaltyUserDataMock } from "../interfaces/MockInterfaces";
+import React, { useCallback, useEffect, useState } from "react";
+import LoyaltySearchManualCpf from "./view/LoyaltySearchManualCpf";
+import { getLoyaltyUserData } from "../api/getUserData.loalty";
+import { ILoyaltyUserDataApiResponse } from "../interfaces/ApiInterfaces";
+import { LoyaltyUserDataView } from "./view/LoyaltyUserDataView";
+import { getUserData } from "../api/getOrderForm.vtex";
+// import { CupomDataLoyalty } from "./CupomDataLoyalty copy";
 
 const ItapuaLoyalty = () => {
-  const [userDataApi, setUserDataApi] = useState<
-    any | ILoyaltyUserDataMock | null
-  >(null);
-  const [loading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<any>(false);
-  const [cpf, setCpf] = useState<null | string>(null);
+  const [
+    userDataApi,
+    setUserDataApi,
+  ] = useState<ILoyaltyUserDataApiResponse | null>(null);
+  const [loading, setIsLoading] = useState<boolean>(true);
+  const [showManualInput, setShowManualInput] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  //@ts-ignore
+  const [cpf, setCpf] = useState<string | null>(null);
+  //@ts-ignore
+  const [orderForm, setOrderForm] = useState<any>(null);
 
-  // GET USER DOCUMENT - CPF
+  const fetchLoyaltyData = useCallback(
+    async (cpf: string) => {
+      setIsLoading(true);
+      setError(null);
 
-  useEffect(() => {
-    async function getUserData() {
       try {
-        const request = await fetch("/api/checkout/pub/orderForm");
-        const response = await request.json();
-
-        if (request.ok) {
-          setIsLoading(false);
+        const response = await getLoyaltyUserData(cpf);
+        if ("message" in response.loalty) {
+          setError(
+            "Cliente não encontrado ou nenhum ponto de fidelidade disponível."
+          );
+        } else {
+          setError(null);
+          setShowManualInput(false);
           setUserDataApi(response);
         }
-      } catch (error) {
-        setError(error.message);
-        console.error("Error fetching data:", error);
+      } catch (err) {
+        setError("Erro ao buscar dados de fidelidade.");
+        console.error("Erro na requisição getLoyaltyUserData:", err);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    getUserData();
-  }, []);
+    },
+    [getLoyaltyUserData]
+  );
 
   useEffect(() => {
-    if (userDataApi) {
-      setCpf(userDataApi?.clientProfileData?.document);
-    }
-  }, [userDataApi]);
+    console.log("v0.0.267");
+    const fetchOrderFormDataAndInitialLoyaltyData = async () => {
+      try {
+        const orderFormResponse = await getUserData();
+        setOrderForm(orderFormResponse);
+
+        const initialCpf = orderFormResponse?.clientProfileData?.document;
+        setCpf(initialCpf || null);
+
+        if (!initialCpf || initialCpf.includes("*")) {
+          setShowManualInput(true);
+        } else {
+          fetchLoyaltyData(initialCpf);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setError("Erro ao buscar dados do formulário de pedido.");
+        console.error("Erro na requisição getUserData:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrderFormDataAndInitialLoyaltyData();
+  }, [fetchLoyaltyData]);
 
   useEffect(() => {
-    console.log("CPF4: ", cpf);
-  }, [cpf]);
+    console.log(userDataApi);
+  },[userDataApi])
 
-  if (loading) return <p>Loading data...</p>;
-  if (error) return <p>Error retriving data...</p>;
+  const searchCpfManual = async (manualCpf: string) => {
+    fetchLoyaltyData(manualCpf);
+  };
 
-  if (!cpf)
-    return (
-      <div style={{ display: cpf ? "none" : "block" }}>
-        <h1
-          style={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "1.5rem",
-          }}
-        >
-          CPF não encontrado,
-          <a style={{ display: "block " }} href="/account#/profile">
-            por favor cadastre seu cpf
-          </a>{" "}
-        </h1>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-          <p>Caso ja tenha se cadastrado </p>
-          <button
-            style={{
-              background: "#e8132c",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "6px",
-              padding: ".5rem 1rem",
-            }}
-            onClick={() => window.location.reload()}
-          >
-            Recarregue a página
-          </button>
-        </div>
-      </div>
-    );
+  if (loading) return <p>Carregando...</p>;
+
+  if (error)
+    return <h2 style={{ color: "red", padding: "1.5rem" }}>{error}</h2>;
+
+  if (showManualInput)
+    return <LoyaltySearchManualCpf searchCpfManual={searchCpfManual} />;
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "auto" }}>
       <div
         className="wrapper-loyaly-data"
-        style={{ padding: "1.5rem", height: "100%" }}
+        style={{ padding: "1.5rem", height: "auto" }}
       >
-        <UserDataLoyalty cpf={cpf} setUserDataApi={setUserDataApi} />
-         {userDataApi && (
-          <CupomDataLoyalty cpf={cpf} userDataApi={userDataApi} />
-        )}  
+        {userDataApi && (
+          <LoyaltyUserDataView loalty={userDataApi.loalty} /> // Acesso direto, pois userDataApi não é mais null aqui
+        )}
       </div>
     </div>
   );

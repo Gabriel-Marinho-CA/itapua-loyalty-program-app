@@ -52,7 +52,7 @@ async function getLoyaltyUserDataMock(): Promise<
 > {
   const mock = {
     loalty: {
-      cpfcnpj: "087.442.787-80",
+      cpfcnpj: "08744278780",
       nome: "CARLOS EDUARDO KLEIN",
       totalpontos: "1462",
       valorpontos: "146.20",
@@ -85,7 +85,7 @@ async function getLoyaltyUserDataMock(): Promise<
 }
 
 // async function getLoyaltData(cpf: string) {
-//   const url = `http://apitp.itapua.etc.br/searchLoality?cpfCnpj=${cpf}`;
+//   const url = `https://api.itapua.etc.br/searchLoality?cpfCnpj=${cpf}`;
 
 //   const headers = {
 //     "Itp-Api-Apptoken":

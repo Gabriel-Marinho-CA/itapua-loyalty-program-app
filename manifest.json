@@ -1,7 +1,7 @@
 {
   "name": "itapua-loyalty-app",
   "vendor": "itapua",
-  "version": "0.0.241",
+  "version": "0.0.267",
   "title": "Itapua loyalty My account",
   "description": "Example on how to extend the MyAccount page.",
   "dependencies": {

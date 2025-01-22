@@ -1,12 +1,13 @@
 import React from "react";
-import { ILoyaltyUserDataMock } from "../../interfaces/MockInterfaces";
+import { ILoyaltyUserData } from "../../interfaces/ApiInterfaces";
 
 interface ILoyaltyUserDataView {
-  loalty: ILoyaltyUserDataMock;
+  loalty: ILoyaltyUserData;
 }
 
 export function LoyaltyUserDataView({ loalty }: ILoyaltyUserDataView) {
   const { nome, totalpontos, valorpontos, dataexpiracao } = loalty;
+  console.log("LoyaltyUserDataView:", loalty);
 
   return (
     <>

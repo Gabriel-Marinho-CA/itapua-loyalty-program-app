@@ -6,8 +6,12 @@ export interface ILoyaltyUserData {
     dataexpiracao: string;
 }
 
+export interface ILoyaltyNotFoundUserData {
+    message: string;
+}
+
 export interface ILoyaltyUserDataApiResponse {
-    loalty: ILoyaltyUserData;
+    loalty: ILoyaltyUserData & ILoyaltyNotFoundUserData
 }
 
 export interface ILoyaltyCreateCupomData {

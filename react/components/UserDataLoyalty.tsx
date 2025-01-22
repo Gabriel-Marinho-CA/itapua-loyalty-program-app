@@ -31,7 +31,7 @@ export default function UserDataLoyalty({ cpf, setUserDataApi }: IUserData) {
 
   // if (apiLoading) return <p>Loading data...</p>;
   // if (apiError) return <p>Error retriving data...</p>;
-  if (!loyaltyUserData)
+  if (!loyaltyUserData) {
     return (
       <h1
         style={{
@@ -47,6 +47,8 @@ export default function UserDataLoyalty({ cpf, setUserDataApi }: IUserData) {
         <a href="#">Saiba mais.</a>
       </h1>
     );
+  }
 
-  return loyaltyUserData && <LoyaltyUserDataView loalty={loyaltyUserData} />;
+  // return loyaltyUserData && <LoyaltyUserDataView loalty={loyaltyUserData} />;
+  return <LoyaltyUserDataView loalty={loyaltyUserData} />;
 }

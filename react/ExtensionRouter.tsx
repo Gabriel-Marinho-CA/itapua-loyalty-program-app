@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Route } from "vtex.my-account-commons/Router";
 
 import ItapuaLoyalty from "./components/ItapuaLoyalty";
+// import ItapuaLoyaltyMock from "./components/ItapuaLoyaltyMock";
 // import ExamplePage from "./components/Page";
 
 /* Router */

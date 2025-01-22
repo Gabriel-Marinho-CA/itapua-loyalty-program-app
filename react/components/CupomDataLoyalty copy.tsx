@@ -1,6 +1,5 @@
 // import React, { useState } from "react";
 // // import { useLoyaltyCreateCupom } from "../hooks/useLoyaltyCreateCupom";
-// import { OrderForm } from "vtex.order-manager";
 // import { LoyaltyCupomUserView } from "./view/LoyaltyCupomUserView";
 // import {
 //   // ILoyaltyCreatedCupomUserDataMockResponse,
@@ -10,9 +9,10 @@
 // interface ICupomData {
 //   cpf: string;
 //   userDataApi: ILoyaltyUserDataMock;
+//   orderForm: any;
 // }
 
-// export function CupomDataLoyaltys({ cpf, userDataApi }: ICupomData) {
+// export function CupomDataLoyalty({ cpf, userDataApi, orderForm }: ICupomData) {
 //   const [cuponInCart, setCuponInCart] = useState<boolean>(false);
 //   const [createCupom, setCreateCupom] = useState<boolean>(false);
 //   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -20,57 +20,16 @@
 //     "Cupom adicionado ao carrinho !"
 //   );
 
-//   const { useOrderForm } = OrderForm;
-//   const { orderForm } = useOrderForm();
-
 //   console.log("CupomDataLoyalty:", cpf, userDataApi);
-//   // const { totalpontos } = userDataApi;
-
-//   // const userData = useMemo(
-//   //   () => ({
-//   //     cpfCnpj: cpf,
-//   //     discountValue: totalpontos,
-//   //   }),
-//   //   [cpf, totalpontos]
-//   // );
-
-//   // const {
-//   //   loyaltyCupomGenerate,
-//   //   apiCupomLoading,
-//   //   apiCupomError,
-//   // } = useLoyaltyCreateCupom(userData);
-
-//   const loyaltyCupomGenerate = {
-//     customer: "xxx.xxx.xxx-xx",
-//     nominalDiscountValue: 146,
-//     totalValueFloor: 487,
-//     coupon: ["ca08in80"],
-//     expiresAt: "2024-12-05T22:54:45.475Z",
-//   };
-
-//   // if (apiCupomLoading) return <p>Loading data...</p>;
-//   // if (apiCupomError) return <p>Error retriving data...</p>;
 
 //   const handleAttachCoupomToCart = () => {
-//     const { id } = orderForm;
-//     if (!cuponInCart) {
-//       fetch(`/api/checkout/pub/orderForm/${id}/coupons`, {
-//         method: "POST",
-//         headers: {
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ text: "isasaturno10" }),
-//       }).then((res) => {
-//         if (res.ok) {
-//           setCuponInCart(true);
-//         } else {
-//           setTextCuponInCart("Erro ao adicionar cupom ao carrinho");
-//         }
-//       });
-//     }
 //   };
-
+  
+//   if (res.ok) {
+//     setCuponInCart(true);
+//   } else {
+//     setTextCuponInCart("Erro ao adicionar cupom ao carrinho");
+//   }
 //   const handleCupomModalState = () => {
 //     if (!createCupom) {
 //       setCreateCupom(true);
