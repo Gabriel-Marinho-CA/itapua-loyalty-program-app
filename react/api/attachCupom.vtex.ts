@@ -1,4 +1,4 @@
-export async function handleAttachCoupomToCart(id: string | number, cuponInCart: boolean, cupomID: string) {
+export async function attachCoupomToCart(id: string | number, cuponInCart: boolean, cupomID: string | undefined) {
 
     const url = `/api/checkout/pub/orderForm/${id}/coupons`;
     const headers = {

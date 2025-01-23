@@ -4,6 +4,7 @@ import { getLoyaltyUserData } from "../api/getUserData.loalty";
 import { ILoyaltyUserDataApiResponse } from "../interfaces/ApiInterfaces";
 import { LoyaltyUserDataView } from "./view/LoyaltyUserDataView";
 import { getUserData } from "../api/getOrderForm.vtex";
+import { LoyaltyCupomUserView } from "./view/LoyaltyCupomUserView";
 // import { CupomDataLoyalty } from "./CupomDataLoyalty copy";
 
 const ItapuaLoyalty = () => {
@@ -16,7 +17,6 @@ const ItapuaLoyalty = () => {
   const [error, setError] = useState<string | null>(null);
   //@ts-ignore
   const [cpf, setCpf] = useState<string | null>(null);
-  //@ts-ignore
   const [orderForm, setOrderForm] = useState<any>(null);
 
   const fetchLoyaltyData = useCallback(
@@ -46,7 +46,7 @@ const ItapuaLoyalty = () => {
   );
 
   useEffect(() => {
-    console.log("v0.0.267");
+    console.log("v0.0.269");
     const fetchOrderFormDataAndInitialLoyaltyData = async () => {
       try {
         const orderFormResponse = await getUserData();
@@ -73,7 +73,7 @@ const ItapuaLoyalty = () => {
 
   useEffect(() => {
     console.log(userDataApi);
-  },[userDataApi])
+  }, [userDataApi]);
 
   const searchCpfManual = async (manualCpf: string) => {
     fetchLoyaltyData(manualCpf);
@@ -94,7 +94,10 @@ const ItapuaLoyalty = () => {
         style={{ padding: "1.5rem", height: "auto" }}
       >
         {userDataApi && (
-          <LoyaltyUserDataView loalty={userDataApi.loalty} /> // Acesso direto, pois userDataApi não é mais null aqui
+          <>
+            <LoyaltyUserDataView loalty={userDataApi.loalty} /> 
+            <LoyaltyCupomUserView orderFormId={orderForm.id}  loalty={userDataApi.loalty}/>
+          </>
         )}
       </div>
     </div>

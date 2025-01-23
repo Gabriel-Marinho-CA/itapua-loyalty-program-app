@@ -7,7 +7,10 @@ interface ILoyaltyUserDataView {
 
 export function LoyaltyUserDataView({ loalty }: ILoyaltyUserDataView) {
   const { nome, totalpontos, valorpontos, dataexpiracao } = loalty;
-  console.log("LoyaltyUserDataView:", loalty);
+
+  const date = new Date(dataexpiracao);
+
+  const formattedDate = date.toLocaleDateString("pt-BR");
 
   return (
     <>
@@ -19,9 +22,9 @@ export function LoyaltyUserDataView({ loalty }: ILoyaltyUserDataView) {
         <p>💳 Você possui {totalpontos} pontos</p>
         <p>
           💰 Isso equivale a{" "}
-          <strong style={{ color: "#e8132c" }}>{valorpontos}</strong>
+          <strong style={{ color: "#e8132c" }}>R$ {valorpontos}</strong>
         </p>
-        <p>📅 Expiram em: {dataexpiracao}</p>
+        <p>📅 Expiram em: {formattedDate}</p>
       </div>
     </>
   );
