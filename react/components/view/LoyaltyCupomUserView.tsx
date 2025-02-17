@@ -38,7 +38,8 @@ export const LoyaltyCupomUserView = ({ orderFormId, loalty }: IProps) => {
     };
 
     const generateCupom = await generateUserCupom(data);
-    console.log(generateCupom)
+    setCreateCupom(true);
+    setIsModalOpen(true);
     setCupomUserData(generateCupom);
   };
 
@@ -164,10 +165,11 @@ export const LoyaltyCupomUserView = ({ orderFormId, loalty }: IProps) => {
             background: "#e8132c",
             color: "#fff",
             border: "none",
-            cursor: "pointer",
+            cursor: cuponInCart ? "not-allowed" : "pointer",
             borderRadius: "6px",
             padding: ".5rem 1rem",
           }}
+          disabled={cuponInCart}
           onClick={handleAttachCoupomToCart}
         >
           Adicionar cupom ao carrinho

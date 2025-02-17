@@ -5,7 +5,6 @@ import { ILoyaltyUserDataApiResponse } from "../interfaces/ApiInterfaces";
 import { LoyaltyUserDataView } from "./view/LoyaltyUserDataView";
 import { getUserData } from "../api/getOrderForm.vtex";
 import { LoyaltyCupomUserView } from "./view/LoyaltyCupomUserView";
-// import { CupomDataLoyalty } from "./CupomDataLoyalty copy";
 
 const ItapuaLoyalty = () => {
   const [
@@ -37,7 +36,7 @@ const ItapuaLoyalty = () => {
         }
       } catch (err) {
         setError("Erro ao buscar dados de fidelidade.");
-        console.error("Erro na requisição getLoyaltyUserData:", err);
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -46,7 +45,6 @@ const ItapuaLoyalty = () => {
   );
 
   useEffect(() => {
-    console.log("v0.0.269");
     const fetchOrderFormDataAndInitialLoyaltyData = async () => {
       try {
         const orderFormResponse = await getUserData();
@@ -71,10 +69,6 @@ const ItapuaLoyalty = () => {
     fetchOrderFormDataAndInitialLoyaltyData();
   }, [fetchLoyaltyData]);
 
-  useEffect(() => {
-    console.log(userDataApi);
-  }, [userDataApi]);
-
   const searchCpfManual = async (manualCpf: string) => {
     fetchLoyaltyData(manualCpf);
   };
@@ -93,10 +87,39 @@ const ItapuaLoyalty = () => {
         className="wrapper-loyaly-data"
         style={{ padding: "1.5rem", height: "auto" }}
       >
+        <a
+          href="/account#/"
+          style={{
+            color: "rgb(232, 19, 44)",
+            display: "flex",
+            textDecoration: "none",
+            alignItems: "center",
+            gap: ".25rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <svg
+            width="16"
+            height="11"
+            viewBox="0 0 16 11"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.5 15.5002C5.75781 15.5002 5.92969 15.4169 6.10156 15.2502L11 10.5002L9.79687 9.33356L6.35938 12.6669L6.35938 0H4.64063L4.64062 12.6669L1.20312 9.33356L0 10.5002L4.89844 15.2502C5.07031 15.4169 5.24219 15.5002 5.5 15.5002Z"
+              transform="translate(16.0002) rotate(90)"
+              fill="currentColor"
+            ></path>
+          </svg>
+          Voltar
+        </a>
         {userDataApi && (
           <>
-            <LoyaltyUserDataView loalty={userDataApi.loalty} /> 
-            <LoyaltyCupomUserView orderFormId={orderForm.id}  loalty={userDataApi.loalty}/>
+            <LoyaltyUserDataView loalty={userDataApi.loalty} />
+            <LoyaltyCupomUserView
+              orderFormId={orderForm.id}
+              loalty={userDataApi.loalty}
+            />
           </>
         )}
       </div>
